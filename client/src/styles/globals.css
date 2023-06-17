@@ -1,0 +1,7 @@
+/* Add your global styles, variables, and media queries here */
+
+
+/* Tailwind CSS imports */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
