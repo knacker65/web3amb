@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const CompanyApplicationForm = () => {
   const [formValues, setFormValues] = useState({
@@ -60,6 +61,21 @@ const CompanyApplicationForm = () => {
 
   const showOtherProjectTypeInput = formValues.projectType.includes('other');
   const showOtherBlockchainPlatformInput = formValues.blockchainPlatform === 'other';
+
+  onSubmit: (values, { setSubmitting, resetForm }) => {
+    axios.post('http://localhost:5000/applications', values)
+      .then(response => {
+        console.log(response);
+        setSubmitting(false);
+        resetForm();
+        // Redirect to the dashboard page
+        history.push('/dashboard');
+      })
+      .catch(error => {
+        console.log(error);
+        setSubmitting(false);
+      });
+  }
 
   return (
     
