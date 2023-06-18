@@ -1,6 +1,9 @@
 import React from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+
 
 const BrowseJobs = () => {
   const sampleJobData = [
@@ -22,6 +25,18 @@ const BrowseJobs = () => {
     },
     // More job data...
   ];
+
+  const [jobs, setJobs] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:5000/projects')
+      .then(response => {
+        setJobs(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
