@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useRouter } from 'next/router';
 import Navbar from './Navbar'; // Import the Navbar component
+import axios from 'axios';
 
 const validationSchema = Yup.object({
   // ...validation schema
@@ -28,6 +29,21 @@ const ApplicationForm = () => {
       validationSchema={validationSchema}
       onSubmit={async (values) => {
         // form submission logic
+
+        onSubmit: (values, { setSubmitting, resetForm }) => {
+          axios.post('http://localhost:5000/applications', values)
+            .then(response => {
+              console.log(response);
+              setSubmitting(false);
+              resetForm();
+              // Redirect to the dashboard page
+              history.push('/dashboard');
+            })
+            .catch(error => {
+              console.log(error);
+              setSubmitting(false);
+            });
+        }
 
         // Set the success message after successful submission
         setSuccessMessage('Application submitted successfully! Thank you for applying.');
