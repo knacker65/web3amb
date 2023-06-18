@@ -1,6 +1,22 @@
 import React from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import axios from 'axios';
+
+onSubmit: (values, { setSubmitting, resetForm }) => {
+  axios.post('http://localhost:5000/projects', values)
+    .then(response => {
+      console.log(response);
+      setSubmitting(false);
+      resetForm();
+      // Redirect to the job listings page
+      history.push('/browse-jobs');
+    })
+    .catch(error => {
+      console.log(error);
+      setSubmitting(false);
+    });
+}
 
 const PostJob = () => {
   return (
