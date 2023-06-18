@@ -1,4 +1,18 @@
 import React from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+
+const [user, setUser] = useState(null);
+
+useEffect(() => {
+  axios.get(`http://localhost:5000/users/${userId}`)
+    .then(response => {
+      setUser(response.data);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+}, []);
 
 const Dashboard = () => {
   return (
