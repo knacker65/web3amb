@@ -157,7 +157,32 @@ async function getProject(req, res, next) {
   next();
 }
 
-// ...
+app.delete('/projects/:id', getProject, async (req, res) => {
+  try {
+    await res.project.remove();
+    res.json({ message: 'Project deleted' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Middleware function for getting project by ID
+async function getProject(req, res, next) {
+  let project;
+
+  try {
+    project = await Project.findById(req.params.id);
+
+    if (project == null) {
+      return res.status(404).json({ message: 'Cannot find project' });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+
+  res.project = project;
+  next();
+}
 
 
 app.listen(port, () => {
