@@ -3,6 +3,8 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useRouter } from 'next/router';
 import Navbar from './Navbar'; // Import the Navbar component
+import axios from 'axios';
+
 
 const validationSchema = Yup.object({
   fullName: Yup.string().notRequired(),
@@ -20,6 +22,26 @@ const validationSchema = Yup.object({
   otherCheckbox: Yup.boolean().notRequired(),
   isCompany: Yup.boolean().notRequired(),
 });
+
+
+onSubmit: (values, { setSubmitting, resetForm }) => {
+  axios.post('http://localhost:5000/users', values)
+    .then(response => {
+      console.log(response);
+      setSubmitting(false);
+      resetForm();
+      // Redirect to the appropriate page
+      if (values.applyAs === 'Applicant') {
+        history.push('/applicant-register');
+      } else {
+        history.push('/company-application');
+      }
+    })
+    .catch(error => {
+      console.log(error);
+      setSubmitting(false);
+    });
+}
 
 const ApplicationForm = () => {
   const [successMessage, setSuccessMessage] = useState(null);
