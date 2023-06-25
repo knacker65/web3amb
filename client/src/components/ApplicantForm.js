@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useRouter } from 'next/router';
-import Navbar from './Navbar'; // Import the Navbar component
 import axios from 'axios';
 
 const validationSchema = Yup.object({
@@ -14,7 +13,6 @@ const ApplicationForm = () => {
   const router = useRouter();
 
   return (
-    
     <Formik
       initialValues={{
         fullName: '',
@@ -27,41 +25,34 @@ const ApplicationForm = () => {
         termsAndConditions: false,
       }}
       validationSchema={validationSchema}
-      onSubmit={async (values) => {
-        // form submission logic
-
-        onSubmit: (values, { setSubmitting, resetForm }) => {
-          axios.post('http://localhost:5000/applications', values)
-            .then(response => {
-              console.log(response);
-              setSubmitting(false);
-              resetForm();
-              // Redirect to the dashboard page
-              history.push('/dashboard');
-            })
-            .catch(error => {
-              console.log(error);
-              setSubmitting(false);
-            });
-        }
-
-        // Set the success message after successful submission
-        setSuccessMessage('Application submitted successfully! Thank you for applying.');
-
-        // Redirect after successful submission
-        router.push('/applicant-dashboard');
+      onSubmit={(values, { setSubmitting, resetForm }) => {
+        console.log(values); // Add this line
+        axios.post('http://localhost:5000/users/add', values)
+          .then(response => {
+            
+            console.log(response);
+            setSubmitting(false);
+            resetForm();
+            // Redirect to the dashboard page
+            router.push('/dashboard');
+          })
+          .catch(error => {
+            console.log(error);
+            setSubmitting(false);
+          });
       }}
+      
     >
       {({ isSubmitting }) => (
         <>
           {successMessage && <p className="text-green-500 mb-4 font-semibold">{successMessage}</p>}
           <Form className="flex flex-wrap max-w-xl p-8 bg-white rounded-lg shadow-md space-y-4">
-            {/* Add your form fields here */}
             <div className="w-full">
               <label htmlFor="fullName" className="block text-gray-700 font-medium">
                 Full Name
               </label>
               <Field
+               id="fullName"
                 name="fullName"
                 type="text"
                 className="w-full mt-1 border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
@@ -78,6 +69,7 @@ const ApplicationForm = () => {
                 Email
               </label>
               <Field
+              id="email"
                 name="email"
                 type="email"
                 className="w-full mt-1 border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
@@ -94,6 +86,7 @@ const ApplicationForm = () => {
                 Ethereum Address
               </label>
               <Field
+              id="ethAdress"
                 name="ethAddress"
                 type="text"
                 className="w-full mt-1 border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
@@ -102,104 +95,111 @@ const ApplicationForm = () => {
                 name="ethAddress"
                 className="text-red-500 text-sm mt-1"
                 component="p"
-                />
-                </div>
-                <div className="w-full">
-          <label htmlFor="twitterHandle" className="block text-gray-700 font-medium">
-            Twitter Handle
-          </label>
-          <Field
-            name="twitterHandle"
-            type="text"
-            className="w-full mt-1 border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
-          />
-          <ErrorMessage
-            name="twitterHandle"
-            className="text-red-500 text-sm mt-1"
-            component="p"
-          />
-        </div>
+              />
+            </div>
 
-        <div className="w-full">
-          <label htmlFor="discordHandle" className="block text-gray-700 font-medium">
-            Discord Handle
-          </label>
-          <Field
-            name="discordHandle"
-            type="text"
-            className="w-full mt-1 border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
-          />
-          <ErrorMessage
-            name="discordHandle"
-            className="text-red-500 text-sm mt-1"
-            component="p"
-          />
-        </div>
+            <div className="w-full">
+              <label htmlFor="twitterHandle" className="block text-gray-700 font-medium">
+                Twitter Handle
+              </label>
+              <Field
+              id="twitterHandle"
+                name="twitterHandle"
+                type="text"
+                className="w-full mt-1 border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+              />
+              <ErrorMessage                name="twitterHandle"
+                className="text-red-500 text-sm mt-1"
+                component="p"
+              />
+            </div>
 
-        <div className="w-full">
-          <label htmlFor="interests" className="block text-gray-700 font-medium">
-            Interests (Web3, NFTs, DeFi, etc.)
-          </label>
-          <Field
-            name="interests"
-            as="textarea"
-            rows="3"
-            className="w-full mt-1 border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
-          />
-          <ErrorMessage
-            name="interests"
-            className="text-red-500 text-sm mt-1"
-            component="p"
-          />
-        </div>
+            <div className="w-full">
+              <label htmlFor="discordHandle" className="block text-gray-700 font-medium">
+                Discord Handle
+              </label>
+              <Field
+              id="discordHandle"
+                name="discordHandle"
+                type="text"
+                className="w-full mt-1 border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+              />
+              <ErrorMessage
+                name="discordHandle"
+                className="text-red-500 text-sm mt-1"
+                component="p"
+              />
+            </div>
 
-        <div className="w-full">
-          <label htmlFor="ambassadorExperience" className="block text-gray-700 font-medium">
-            Previous Ambassador Experience (if any)
-          </label>
-          <Field
-            name="ambassadorExperience"
-            as="textarea"
-            rows="3"
-            className="w-full mt-1 border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
-          />
-          <ErrorMessage
-            name="ambassadorExperience"
-            className="text-red-500 text-sm mt-1"
-            component="p"
-          />
-        </div>
+            <div className="w-full">
+              <label htmlFor="interests" className="block text-gray-700 font-medium">
+                Interests (Web3, NFTs, DeFi, etc.)
+              </label>
+              <Field
+              id="interests"
+                name="interests"
+                as="textarea"
+                rows="3"
+                className="w-full mt-1 border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+              />
+              <ErrorMessage
+                name="interests"
+                className="text-red-500 text-sm mt-1"
+                component="p"
+              />
+            </div>
 
-        <div className="w-full">
-          <Field
-            name="termsAndConditions"
-            type="checkbox"
-            className="mt-2"
-          />
-          <label htmlFor="termsAndConditions" className="ml-2 text-gray-700 font-medium">
-            I accept the terms and conditions
-          </label>
-          <ErrorMessage
-            name="termsAndConditions"
-            className="text-red-500 text-sm mt-1"
-            component="p"
-          />
-        </div>
+            <div className="w-full">
+              <label htmlFor="ambassadorExperience" className="block text-gray-700 font-medium">
+                Previous Ambassador Experience (if any)
+              </label>
+              <Field
+              id="ambassadorExperience"
+                name="ambassadorExperience"
+                as="textarea"
+                rows="3"
+                className="w-full mt-1 border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+              />
+              <ErrorMessage
+                name="ambassadorExperience"
+                className="text-red-500 text-sm mt-1"
+                component="p"
+              />
+            </div>
 
-        <div className="w-full flex justify-end">
-          <button
-            type="submit"
-            className="bg-blue-500 text-white px-6 py-2 rounded-lg font-medium mt-4"
-            disabled={isSubmitting}
-          >
-            Register
-          </button>
-        </div>
-      </Form>
-    </>
-  )}
-</Formik>
-);
+            <div className="w-full">
+              <Field
+              id="termsAndConditions"
+                name="termsAndConditions"
+                type="checkbox"
+                className="mt-2"
+              />
+              <label htmlFor="termsAndConditions" className="ml-2 text-gray-700 font-medium">
+                I accept the terms and conditions
+              </label>
+              <ErrorMessage
+                name="termsAndConditions"
+                className="text-red-500 text-sm mt-1"
+                component="p"
+              />
+            </div>
+
+            <div className="w-full flex justify-end">
+              <button
+                type="submit"
+                className="bg-blue-500 text-white px-6 py-2 rounded-lg font-medium mt-4"
+                disabled={isSubmitting}
+              >
+                Register
+              </button>
+            </div>
+          </Form>
+        </>
+      )}
+    </Formik>
+  );
 };
 
 export default ApplicationForm;
+
+               
