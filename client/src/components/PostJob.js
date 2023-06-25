@@ -1,30 +1,42 @@
 import React from 'react';
+import axios from 'axios';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import axios from 'axios';
-
-onSubmit: (values, { setSubmitting, resetForm }) => {
-  axios.post('http://localhost:5000/projects', values)
-    .then(response => {
-      console.log(response);
-      setSubmitting(false);
-      resetForm();
-      // Redirect to the job listings page
-      history.push('/browse-jobs');
-    })
-    .catch(error => {
-      console.log(error);
-      setSubmitting(false);
-    });
-}
 
 const PostJob = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const jobData = {
+      jobTitle: event.target['job-title'].value,
+      companyName: event.target['company-name'].value,
+      jobLocation: event.target['job-location'].value,
+      jobType: event.target['job-type'].value,
+      jobDescription: event.target['job-description'].value,
+      rewardStructure: event.target['reward-structure'].value,
+      applicationProcess: event.target['application-process'].value,
+      jobRequirements: event.target['job-requirements'].value,
+      skillsAndQualifications: event.target['skills-and-qualifications'].value,
+    };
+
+    axios.post('http://localhost:5000/jobs/add', jobData)
+      .then(response => {
+        console.log(response);
+        // You can add any success handling here
+      })
+      .catch(error => {
+        console.log(error);
+        // You can add any error handling here
+      });
+  };
+
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <div className="container mx-auto px-4 py-16">
         <h2 className="text-3xl font-bold mb-8">Post an Ambassador Job</h2>
-        <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"onSubmit={handleSubmit}>
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="job-title">
               Job Title
