@@ -2,8 +2,12 @@ import React from 'react';
 import axios from 'axios';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import { useDispatch } from 'react-redux';
+import { addJob } from '../actions/jobActions';
 
 const PostJob = () => {
+  const dispatch = useDispatch();
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -19,7 +23,9 @@ const PostJob = () => {
       skillsAndQualifications: event.target['skills-and-qualifications'].value,
     };
 
-    axios.post('http://localhost:5000/jobs/add', jobData)
+    dispatch(addJob(jobData));
+
+    axios.post('http://localhost:5000/jobPostings/add', jobData)
       .then(response => {
         console.log(response);
         // You can add any success handling here
@@ -29,6 +35,7 @@ const PostJob = () => {
         // You can add any error handling here
       });
   };
+
 
 
   return (
