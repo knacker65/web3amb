@@ -1,35 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-
 
 const BrowseJobs = () => {
-  const sampleJobData = [
-    {
-      id: 1,
-      title: 'Web3 Ambassador',
-      company: 'Company A',
-      location: 'Remote',
-      type: 'Full-time',
-      description: 'Description of the job...',
-    },
-    {
-      id: 2,
-      title: 'Blockchain Developer',
-      company: 'Company B',
-      location: 'New York',
-      type: 'Part-time',
-      description: 'Description of the job...',
-    },
-    // More job data...
-  ];
-
   const [jobs, setJobs] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:5000/projects')
+    axios.get('http://localhost:5000/jobs')
       .then(response => {
         setJobs(response.data);
       })
@@ -37,6 +16,10 @@ const BrowseJobs = () => {
         console.log(error);
       });
   }, []);
+
+  const filteredJobs = jobs.filter(job =>
+    job.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -49,6 +32,8 @@ const BrowseJobs = () => {
             type="text"
             className="w-full p-2 border border-gray-300 rounded"
             placeholder="Search jobs..."
+            value={searchTerm}
+            onChange={event => setSearchTerm(event.target.value)}
           />
         </div>
 
@@ -65,7 +50,7 @@ const BrowseJobs = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {sampleJobData.map((job) => (
+          {filteredJobs.map((job) => (
             <div
               key={job.id}
               className="border border-gray-200 p-4 rounded bg-white shadow"
