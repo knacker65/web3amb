@@ -12,6 +12,8 @@ const jobPostingSchema = new Schema({
   applicationProcess: { type: String, required: true },
   jobRequirements: { type: String, required: true },
   skillsAndQualifications: { type: String, required: true },
+  datePosted: { type: Date, default: Date.now }, // This will automatically set the date when the job is posted
+  deadline: { type: Date, required: true }, // New field for the deadline
 }, {
   timestamps: true,
 });
