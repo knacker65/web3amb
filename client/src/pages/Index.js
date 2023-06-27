@@ -167,7 +167,7 @@ export default function Home() {
         {/* Step-by-Step Guide */}
         {/* Replace with appropriate infographic or illustration */}
         <img
-          src="https://via.placeholder.com/1000x400"
+          src="file:///C:/Users/salih/Downloads/enlarge_knacker65_webdesign_for_jobs_for_web3_and_blockchain_vector_art_9368f19d-059d-494b-91ae-f39a9a167d17.png"
           alt="Step-by-step guide"
           className="w-full rounded-lg"
         />
