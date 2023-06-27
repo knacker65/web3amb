@@ -7,13 +7,6 @@ router.route('/').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/add').post((req, res) => {
-  const newJobPosting = new JobPosting(req.body);
-
-  newJobPosting.save()
-    .then(() => res.json('Job posting added!'))
-    .catch(err => res.status(400).json('Error: ' + err));
-});
 
 router.route('/:id').get((req, res) => {
   JobPosting.findById(req.params.id)
@@ -27,24 +20,28 @@ router.route('/:id').delete((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/update/:id').post((req, res) => {
-  JobPosting.findById(req.params.id)
-    .then(jobPosting => {
-      jobPosting.jobTitle = req.body.jobTitle;
-      jobPosting.companyName = req.body.companyName;
-      jobPosting.jobLocation = req.body.jobLocation;
-      jobPosting.jobType = req.body.jobType;
-      jobPosting.jobDescription = req.body.jobDescription;
-      jobPosting.rewardStructure = req.body.rewardStructure;
-      jobPosting.applicationProcess = req.body.applicationProcess;
-      jobPosting.jobRequirements = req.body.jobRequirements;
-      jobPosting.skillsAndQualifications = req.body.skillsAndQualifications;
 
-      jobPosting.save()
-        .then(() => res.json('Job posting updated!'))
-        .catch(err => res.status(400).json('Error: ' + err));
-    })
-    .catch(err => res.status(400).json('Error: ' + err));
+
+router.route('/add').post((req, res) => {
+  const newJobPosting = new JobPosting({
+    jobTitle: req.body.jobTitle,
+    companyName: req.body.companyName,
+    jobLocation: req.body.jobLocation,
+    jobType: req.body.jobType,
+    jobDescription: req.body.jobDescription,
+    rewardStructure: req.body.rewardStructure,
+    applicationProcess: req.body.applicationProcess,
+    jobRequirements: req.body.jobRequirements,
+    skillsAndQualifications: req.body.skillsAndQualifications,
+    deadline: req.body.deadline, // Include the deadline in the data you're saving
+  });
+
+  newJobPosting.save()
+    .then(() => res.json('Job posting added!'))
+    .catch(err => {
+      console.error(err.message); // Log the error message to the console
+      res.status(400).json('Error: ' + err.message); // Send the error message in the response
+    });
 });
 
 module.exports = router;
