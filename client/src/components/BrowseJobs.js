@@ -78,7 +78,7 @@ const BrowseJobs = () => {
       <button className="bg-green-500 text-white px-4 py-2 mt-4 rounded ml-4" onClick={() => handleViewDetails(job)}>
         View Details
       </button>
-      </motion.div>
+    </motion.div>
   ))}
 </div>
 {selectedJob && (
@@ -95,12 +95,6 @@ const BrowseJobs = () => {
               transition={{ duration: 0.5 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <motion.div className="bg-white p-8 rounded shadow-lg relative overflow-auto max-h-screen"
-  initial={{ scale: 0 }}
-  animate={{ scale: 1 }}
-  transition={{ duration: 0.5 }}
-  onClick={(e) => e.stopPropagation()}
-></motion.div>
               <button className="absolute top-0 right-0 p-4" onClick={handleCloseModal}>X</button>
               <h2 className="text-xl font-bold mb-2">{selectedJob.jobTitle}</h2>
               <p className="text-gray-500 mb-2">Company: {selectedJob.companyName}</p>
@@ -112,6 +106,9 @@ const BrowseJobs = () => {
               <p className="text-gray-500 mb-2">Job Requirements: {selectedJob.jobRequirements}</p>
               <p className="text-gray-500 mb-2">Skills and Qualifications: {selectedJob.skillsAndQualifications}</p>
               <p className="text-gray-500 mb-2">Deadline: {new Date(selectedJob.deadline).toLocaleDateString()}</p>
+              <button className="bg-green-500 text-white px-4 py-2 mt-4 rounded ml-4">
+                Apply
+              </button>
             </motion.div>
           </motion.div>
         )}
