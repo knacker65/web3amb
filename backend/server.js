@@ -26,11 +26,13 @@ connection.once('open', () => {
 
 const usersRouter = require('./routes/users');
 const projectsRouter = require('./routes/projects');
-const jobPostingsRouter = require('./routes/jobPostings'); // Add this line
+const jobPostingsRouter = require('./routes/jobPostings');
+const formsRouter = require('./routes/forms'); // Newly added line
 
 app.use('/users', usersRouter);
 app.use('/projects', projectsRouter);
-app.use('/jobPostings', jobPostingsRouter); // Add this line
+app.use('/jobPostings', jobPostingsRouter);
+app.use('/forms', formsRouter); // Newly added line
 
 // Error handling for unknown routes
 app.use((req, res, next) => {
@@ -38,5 +40,5 @@ app.use((req, res, next) => {
 });
 
 app.listen(port, () => {
-    console.log(`Server is running on port: ${port}`);
+  console.log(`Server is running on port: ${port}`);
 });
